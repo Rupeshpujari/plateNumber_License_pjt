@@ -24,7 +24,7 @@ color_img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 model = YOLO(model_path)
 
 # Run detection
-results = model.predict(color_img, verbose=False)
+results = model.predict(color_img, verbose=False, save=False)
 
 if len(results[0].boxes) == 0:
     print("No plate detected")
