@@ -1,3 +1,4 @@
+import os
 import cv2
 import matplotlib.pyplot as plt
 from ultralytics import YOLO
@@ -7,14 +8,17 @@ from states_db import states   # import database
 # Initialize EasyOCR
 reader = easyocr.Reader(['en'])
 
-# Paths
-image_path = r"C:\Users\rupes\OneDrive\Desktop\plateNumber_License_pjt\test_images\car1.webp"  
-model_path = r"C:\Users\rupes\OneDrive\Desktop\plateNumber_License_pjt\license_plate_detector.pt"
+# Base project path (where this script is located)
+base_path = os.path.dirname(__file__)
+
+# Paths (relative, not absolute)
+image_path = os.path.join(base_path, "test_images", "car1.webp")
+model_path = os.path.join(base_path, "license_plate_detector.pt")
 
 # Load image
 image = cv2.imread(image_path)
 if image is None:
-    print("Error: Image not found")
+    print("Error: Image not found at", image_path)
     exit()
 
 # Convert to RGB
@@ -24,7 +28,7 @@ color_img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 model = YOLO(model_path)
 
 # Run detection
-results = model.predict(color_img, verbose=False, save=False)
+results = model.predict(color_img, verbose=False)
 
 if len(results[0].boxes) == 0:
     print("No plate detected")
