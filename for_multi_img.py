@@ -7,9 +7,10 @@ from states_db import states   # import database
 # Initialize EasyOCR
 reader = easyocr.Reader(['en'])
 
-# Paths
-folder_path = r"C:\Users\rupes\OneDrive\Desktop\plateNumber_License_pjt\test_images"
-model_path = r"C:\Users\rupes\OneDrive\Desktop\plateNumber_License_pjt\license_plate_detector.pt"
+# Use relative paths
+base_path = os.path.dirname(__file__)   # current folder path
+folder_path = os.path.join(base_path, "test_images")
+model_path = os.path.join(base_path, "license_plate_detector.pt")
 
 # Load YOLO model
 model = YOLO(model_path)
@@ -25,7 +26,7 @@ for filename in os.listdir(folder_path):
 
     color_img = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-    results = model.predict(color_img, verbose=False, save=False)
+    results = model.predict(color_img, verbose=False)
     if len(results[0].boxes) == 0:
         print(f"No plate detected in {filename}")
         continue
